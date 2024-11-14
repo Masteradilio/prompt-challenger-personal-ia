@@ -121,3 +121,266 @@ Aqui estão alguns recursos adicionais que podem ser úteis para entender melhor
 ---
 
 ## 🎯 Prompt de Resposta Proposto
+
+Prompt solicitado ao modelo Claude Sonnet 3.5:
+"Observe o arquivo .md do repositório clonado em https://github.com/Masteradilio/prompt-challenger-personal-ia. 
+Crie para mim um sistema em python que faça o que é proposto no repositório mas com algumas funcionalidades a mais, para que fique mais completo."
+
+Resposta retornada pelo modelo:
+
+Com base no repositório fornecido, vou criar um sistema em Python mais completo para um assistente de personal trainer. Aqui está o código:
+
+'''
+import json
+from datetime import datetime
+import os
+
+class PersonalTrainerAssistant:
+  def __init__(self):
+      self.biotypes = {
+          "ectomorfo": "Corpo mais magro, difícil ganhar peso e massa muscular",
+          "mesomorfo": "Corpo naturalmente musculoso, facilidade para ganhar massa muscular e perder gordura",
+          "endomorfo": "Corpo com tendência a acumular gordura, maior dificuldade em perder peso"
+      }
+      
+      self.training_days = {
+          1: "Full Body",
+          3: "ABC",
+          5: "ABCDE"
+      }
+      
+      self.exercise_types = {
+          "funcional": "Exercícios que melhoram a funcionalidade do corpo",
+          "maquinario": "Exercícios feitos em máquinas",
+          "peso_livre": "Exercícios com pesos livres",
+          "cardio": "Exercícios voltados para resistência cardiovascular",
+          "hiit": "Treinos intervalados de alta intensidade"
+      }
+      
+      self.users = {}
+
+  def cadastrar_usuario(self):
+      print("\n=== Cadastro de Usuário ===")
+      nome = input("Nome: ")
+      idade = int(input("Idade: "))
+      peso = float(input("Peso (kg): "))
+      altura = float(input("Altura (m): "))
+      
+      print("\nBiotipos disponíveis:")
+      for biotipo in self.biotypes.keys():
+          print(f"- {biotipo}")
+      biotipo = input("Seu biotipo: ").lower()
+      
+      print("\nDias disponíveis para treino:")
+      for dias in self.training_days.keys():
+          print(f"- {dias} dia(s)")
+      dias_treino = int(input("Quantidade de dias: "))
+      
+      print("\nTipos de exercícios disponíveis:")
+      for tipo in self.exercise_types.keys():
+          print(f"- {tipo}")
+      tipo_exercicio = input("Tipo preferido: ").lower()
+      
+      objetivos = input("\nQuais são seus objetivos? ")
+      
+      usuario = {
+          "nome": nome,
+          "idade": idade,
+          "peso": peso,
+          "altura": altura,
+          "biotipo": biotipo,
+          "dias_treino": dias_treino,
+          "tipo_exercicio": tipo_exercicio,
+          "objetivos": objetivos,
+          "imc": round(peso / (altura ** 2), 2),
+          "data_cadastro": datetime.now().strftime("%d/%m/%Y"),
+          "treinos_gerados": []
+      }
+      
+      self.users[nome] = usuario
+      self.salvar_usuarios()
+      print("\nUsuário cadastrado com sucesso!")
+      return usuario
+
+  def gerar_treino(self, usuario):
+      print("\n=== Gerando Treino Personalizado ===")
+      
+      treino = {
+          "data": datetime.now().strftime("%d/%m/%Y"),
+          "tipo": self.training_days[usuario["dias_treino"]],
+          "exercicios": self._gerar_exercicios(usuario),
+          "recomendacoes": self._gerar_recomendacoes(usuario)
+      }
+      
+      usuario["treinos_gerados"].append(treino)
+      self.salvar_usuarios()
+      return treino
+
+  def _gerar_exercicios(self, usuario):
+      exercicios = {}
+      
+      if usuario["dias_treino"] == 1:  # Full Body
+          exercicios["Dia 1"] = [
+              "Agachamento 4x12",
+              "Supino 4x12",
+              "Remada 4x12",
+              "Desenvolvimento 4x12",
+              "Extensão de Tríceps 3x15",
+              "Rosca Direta 3x15",
+              "Prancha 3x45s"
+          ]
+          
+      elif usuario["dias_treino"] == 3:  # ABC
+          exercicios["Dia A - Peito/Tríceps"] = [
+              "Supino Reto 4x12",
+              "Supino Inclinado 4x12",
+              "Extensão de Tríceps 4x12",
+              "Tríceps Corda 3x15"
+          ]
+          exercicios["Dia B - Costas/Bíceps"] = [
+              "Puxada Frontal 4x12",
+              "Remada Baixa 4x12",
+              "Rosca Direta 4x12",
+              "Rosca Martelo 3x15"
+          ]
+          exercicios["Dia C - Pernas/Ombros"] = [
+              "Agachamento 4x12",
+              "Leg Press 4x12",
+              "Desenvolvimento 4x12",
+              "Elevação Lateral 3x15"
+          ]
+          
+      else:  # ABCDE
+          exercicios["Dia A - Peito"] = [
+              "Supino Reto 4x12",
+              "Supino Inclinado 4x12",
+              "Crucifixo 3x15"
+          ]
+          exercicios["Dia B - Costas"] = [
+              "Puxada Frontal 4x12",
+              "Remada Baixa 4x12",
+              "Pulldown 3x15"
+          ]
+          exercicios["Dia C - Pernas"] = [
+              "Agachamento 4x12",
+              "Leg Press 4x12",
+              "Extensão 3x15"
+          ]
+          exercicios["Dia D - Ombros"] = [
+              "Desenvolvimento 4x12",
+              "Elevação Lateral 4x12",
+              "Elevação Frontal 3x15"
+          ]
+          exercicios["Dia E - Braços"] = [
+              "Rosca Direta 4x12",
+              "Extensão de Tríceps 4x12",
+              "Rosca Martelo 3x15"
+          ]
+          
+      return exercicios
+
+  def _gerar_recomendacoes(self, usuario):
+      recomendacoes = []
+      
+      # Recomendações baseadas no biotipo
+      if usuario["biotipo"] == "ectomorfo":
+          recomendacoes.append("Foque em exercícios compostos com cargas pesadas")
+          recomendacoes.append("Aumente a ingestão calórica")
+      elif usuario["biotipo"] == "mesomorfo":
+          recomendacoes.append("Mantenha um equilíbrio entre exercícios de força e cardio")
+          recomendacoes.append("Mantenha uma dieta balanceada")
+      else:  # endomorfo
+          recomendacoes.append("Inclua mais exercícios cardiovasculares")
+          recomendacoes.append("Controle a ingestão calórica")
+          
+      # Recomendações baseadas no IMC
+      if usuario["imc"] < 18.5:
+          recomendacoes.append("Procure aumentar o peso de forma saudável")
+      elif usuario["imc"] > 25:
+          recomendacoes.append("Foque na perda de gordura com exercícios aeróbicos")
+          
+      return recomendacoes
+
+  def visualizar_usuario(self, nome):
+      if nome in self.users:
+          usuario = self.users[nome]
+          print("\n=== Dados do Usuário ===")
+          for key, value in usuario.items():
+              if key != "treinos_gerados":
+                  print(f"{key.replace('_', ' ').title()}: {value}")
+          
+          if usuario["treinos_gerados"]:
+              print("\nÚltimo treino gerado:")
+              ultimo_treino = usuario["treinos_gerados"][-1]
+              print(f"\nData: {ultimo_treino['data']}")
+              print(f"Tipo: {ultimo_treino['tipo']}")
+              
+              print("\nExercícios:")
+              for dia, exercicios in ultimo_treino["exercicios"].items():
+                  print(f"\n{dia}:")
+                  for ex in exercicios:
+                      print(f"- {ex}")
+              
+              print("\nRecomendações:")
+              for rec in ultimo_treino["recomendacoes"]:
+                  print(f"- {rec}")
+      else:
+          print("Usuário não encontrado!")
+
+  def salvar_usuarios(self):
+      with open('usuarios.json', 'w') as f:
+          json.dump(self.users, f)
+
+  def carregar_usuarios(self):
+      if os.path.exists('usuarios.json'):
+          with open('usuarios.json', 'r') as f:
+              self.users = json.load(f)
+
+def main():
+  assistant = PersonalTrainerAssistant()
+  assistant.carregar_usuarios()
+  
+  while True:
+      print("\n=== Menu Principal ===")
+      print("1. Cadastrar novo usuário")
+      print("2. Gerar treino")
+      print("3. Visualizar usuário")
+      print("4. Sair")
+      
+      opcao = input("\nEscolha uma opção: ")
+      
+      if opcao == "1":
+          assistant.cadastrar_usuario()
+      elif opcao == "2":
+          nome = input("Nome do usuário: ")
+          if nome in assistant.users:
+              treino = assistant.gerar_treino(assistant.users[nome])
+              print("\nTreino gerado com sucesso!")
+          else:
+              print("Usuário não encontrado!")
+      elif opcao == "3":
+          nome = input("Nome do usuário: ")
+          assistant.visualizar_usuario(nome)
+      elif opcao == "4":
+          print("Encerrando programa...")
+          break
+      else:
+          print("Opção inválida!")
+
+if __name__ == "__main__":
+  main()
+'''
+
+Este sistema inclui as seguintes funcionalidades adicionais:
+
+Sistema completo de cadastro de usuários com persistência de dados em arquivo JSON
+
+1. Cálculo de IMC automático
+2. Histórico de treinos gerados
+3. Recomendações personalizadas baseadas no biotipo e IMC
+4. Interface de menu interativa
+5. Treinos detalhados para diferentes frequências de treino (1, 3 ou 5 dias)
+6. Visualização completa dos dados do usuário e último treino gerado
+7. Salvamento automático das informações
+
+Para usar o sistema, basta executar o script e seguir as opções do menu. O sistema permite cadastrar múltiplos usuários, gerar treinos personalizados e visualizar as informações cadastradas.
