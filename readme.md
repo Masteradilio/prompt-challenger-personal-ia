@@ -130,7 +130,8 @@ Resposta retornada pelo modelo:
 
 Com base no repositório fornecido, vou criar um sistema em Python mais completo para um assistente de personal trainer. Aqui está o código:
 
-'''
+```python
+
 import json
 from datetime import datetime
 import os
@@ -369,7 +370,7 @@ def main():
 
 if __name__ == "__main__":
   main()
-'''
+```
 
 Este sistema inclui as seguintes funcionalidades adicionais:
 
