@@ -122,11 +122,12 @@ Aqui estão alguns recursos adicionais que podem ser úteis para entender melhor
 
 ## 🎯 Prompt de Resposta Proposto
 
-Prompt solicitado ao modelo Claude Sonnet 3.5:
+**Prompt solicitado ao modelo Claude Sonnet 3.5:**
+
 "Observe o arquivo .md do repositório clonado em https://github.com/Masteradilio/prompt-challenger-personal-ia. 
 Crie para mim um sistema em python que faça o que é proposto no repositório mas com algumas funcionalidades a mais, para que fique mais completo."
 
-Resposta retornada pelo modelo:
+**Resposta retornada pelo modelo:**
 
 Com base no repositório fornecido, vou criar um sistema em Python mais completo para um assistente de personal trainer. Aqui está o código:
 
